@@ -25,7 +25,11 @@ def count_clicks(token, link):
     clicks_count = requests.get('https://api-ssl.bitly.com/v4/bitlinks/{0}/clicks/summary'.format(link), headers=headers)
     clicks_count.raise_for_status()
     # print(response.status_code)   
-    return clicks_count
+    return clicks_count.json()['total_clicks']
+
+
+def is_bitlink(url):
+    
 
 
 def main():
@@ -43,8 +47,9 @@ def main():
     try:
         bit_link = shorten_link(token, url)
         print(bit_link)
-        clicks_count = count_clicks(token, bit_link)
-        print(clicks_count)
+        parsed = urlparse(bit_link)
+        clicks_count = count_clicks(token, (parsed.netloc + parsed.path))
+        print('click', clicks_count)
     except requests.exceptions.HTTPError as error:
         print('Error is {0}'.format(error))
         
