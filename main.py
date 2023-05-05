@@ -49,7 +49,7 @@ def is_bitlink(token, url):
 
 
 def main():
-    url = input()
+    url = input('Enter link ')
     load_dotenv('secret.env')
     token = os.environ['TOKEN']
     try:
