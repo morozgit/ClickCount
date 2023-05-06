@@ -1,7 +1,7 @@
 import os
 import requests
 from urllib.parse import urlparse
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 
 def shorten_link(token, url):
@@ -21,8 +21,8 @@ def shorten_link(token, url):
 
 
 def split_url(url):
-    parsed = urlparse(url)
-    return (parsed.netloc + parsed.path)
+    url_parts = urlparse(url)
+    return '{0}{1}'.format(url_parts.netloc, url_parts.path) 
 
 
 def count_clicks(token, link):
@@ -50,8 +50,8 @@ def is_bitlink(token, url):
 
 def main():
     url = input('Enter link ')
-    load_dotenv('secret.env')
-    token = os.environ['TOKEN']
+    load_dotenv(find_dotenv())
+    token = os.environ['BITLY_TOKEN']
     try:
         if is_bitlink(token, url):
             clicks_count = count_clicks(token, split_url(url))
