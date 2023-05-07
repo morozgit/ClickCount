@@ -2,6 +2,7 @@ import os
 import requests
 from urllib.parse import urlparse
 from dotenv import load_dotenv, find_dotenv
+import argparse
 
 
 def shorten_link(token, url):
@@ -49,15 +50,20 @@ def is_bitlink(token, url):
 
 
 def main():
-    url = input('Enter link ')
+    url = argparse.ArgumentParser(
+            description='''You are able to make a short link or
+                            count clicks on it'''
+        )
+    url.add_argument('link', help='Enter link ')
+    args = url.parse_args()
     load_dotenv(find_dotenv())
     token = os.environ['BITLY_TOKEN']
     try:
-        if is_bitlink(token, url):
-            clicks_count = count_clicks(token, split_url(url))
+        if is_bitlink(token, args.link):
+            clicks_count = count_clicks(token, split_url(args.link))
             print('click', clicks_count)
         else:
-            bit_link = shorten_link(token, url)
+            bit_link = shorten_link(token, args.link)
             print(bit_link)
     except requests.exceptions.HTTPError as error:
         print('Error is {0}'.format(error))
