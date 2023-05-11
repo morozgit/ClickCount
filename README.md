@@ -6,7 +6,7 @@
 
 ### Установка python
    
-#### Для Linux введите в терминале
+#### Для Linux 
 ```
 sudo apt-get install python3
 ```
